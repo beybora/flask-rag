@@ -1,5 +1,7 @@
 import { ref } from 'vue'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 export function useChat() {
   const question = ref('')
   const chatHistory = ref<{ role: string; content: string }[]>([])
@@ -10,12 +12,13 @@ export function useChat() {
     if (!question.value.trim()) return
     isLoading.value = true
     error.value = null
+    const historyToSend = chatHistory.value.slice()
     chatHistory.value.push({ role: 'user', content: question.value })
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/ask', {
+      const res = await fetch(`${API_URL}/api/ask`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ question: question.value })
+        body: JSON.stringify({ question: question.value, history: historyToSend })
       })
       const data = await res.json()
       if (res.ok && data.answer) {
@@ -33,11 +36,17 @@ export function useChat() {
     }
   }
 
+  const resetChroma = async () => {
+    await fetch(`${API_URL}/api/reset-chroma`, { method: 'POST' })
+    chatHistory.value = []
+  }
+
   return {
     question,
     chatHistory,
     isLoading,
     handleAsk,
     error,
+    resetChroma,
   }
 } 

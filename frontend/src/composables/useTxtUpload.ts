@@ -1,5 +1,7 @@
 import { ref } from 'vue'
 
+const API_URL = import.meta.env.VITE_API_URL
+
 export function useTxtUpload() {
   const file = ref<File | null>(null)
   const uploadStatus = ref<string>('')
@@ -16,17 +18,17 @@ export function useTxtUpload() {
     const formData = new FormData()
     formData.append('file', file.value)
     try {
-      const res = await fetch('http://127.0.0.1:5000/api/upload/file', {
+      const res = await fetch(`${API_URL}/api/upload/file`, {
         method: 'POST',
         body: formData,
       })
       if (res.ok) {
-        uploadStatus.value = 'Uploaded!'
+        uploadStatus.value = 'Upload erfolgreich!'
       } else {
-        uploadStatus.value = 'Uploading failed!'
+        uploadStatus.value = 'Fehler beim Upload.'
       }
     } catch (e) {
-      uploadStatus.value = 'Uploading failed!'
+      uploadStatus.value = 'Fehler beim Upload.'
     }
   }
 
