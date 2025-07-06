@@ -7,6 +7,14 @@ const { question, chatHistory, isLoading, handleAsk } = useChat()
 <template>
   <div class="bg-white p-8 rounded shadow-md w-full max-w-md mt-8">
     <h2 class="text-xl font-semibold mb-4 text-center">Frage stellen</h2>
+    <div v-if="chatHistory.length" class="mb-6 max-h-64 overflow-y-auto border border-gray-200 rounded bg-gray-50 p-3">
+      <div v-for="(msg, idx) in chatHistory" :key="idx" class="mb-2 last:mb-0">
+        <span :class="msg.role === 'user' ? 'font-bold text-blue-700' : 'text-gray-700'">
+          {{ msg.role === 'user' ? 'Du' : 'Assistant' }}:
+        </span>
+        <span>{{ msg.content }}</span>
+      </div>
+    </div>
     <textarea
       v-model="question"
       placeholder="Stelle eine Frage zum hochgeladenen Text..."
@@ -20,14 +28,6 @@ const { question, chatHistory, isLoading, handleAsk } = useChat()
     >
       Frage absenden
     </button>
-    <div v-if="chatHistory.length" class="mt-6">
-      <div v-for="(msg, idx) in chatHistory" :key="idx" class="mb-2">
-        <span :class="msg.role === 'user' ? 'font-bold text-blue-700' : 'text-gray-700'">
-          {{ msg.role === 'user' ? 'Du' : 'Assistant' }}:
-        </span>
-        <span>{{ msg.content }}</span>
-      </div>
-    </div>
   </div>
 </template>
 

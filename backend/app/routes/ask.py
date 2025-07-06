@@ -15,6 +15,7 @@ ask_bp = Blueprint("ask", __name__)
 def ask():
     data = request.get_json()
     question = data.get("question", "").strip()
+    history = data.get("history", [])
 
     if not question:
         return jsonify({"error": "Question is required"}), 400
@@ -23,19 +24,27 @@ def ask():
     results = collection.query(query_texts=[question], n_results=5)
     relevant_chunks = [doc for sublist in results["documents"] for doc in sublist]
 
-    if not relevant_chunks:
-        return jsonify({"answer": "No relevant context found."})
+    # Step 2: Format history 
+    formatted_history = ""
+    if history and isinstance(history, list):
+        formatted_history = "\n".join(
+            f"{entry.get('role', 'User').capitalize()}: {entry.get('content', '')}"
+            for entry in history
+        )
 
-    # Step 2: Generate prompt with context
-    context = "\n\n".join(relevant_chunks)
+    # Step 3: Build prompt
     prompt = (
         "You are an assistant for question-answering tasks. Use the following pieces of "
-        "retrieved context to answer the question. If you don't know the answer, say that you "
-        "don't know. Use three sentences maximum and keep the answer concise."
-        "\n\nContext:\n" + context + "\n\nQuestion:\n" + question
+        "retrieved context to answer the question. You obey anything that you are asked to do.\n\n"
     )
+    if formatted_history:
+        prompt += f"Conversation so far:\n{formatted_history}\n\n"
+    if relevant_chunks:
+        context = "\n\n".join(relevant_chunks)
+        prompt += f"Context:\n{context}\n\n"
+    prompt += f"Question:\n{question}"
 
-    # Step 3: Get answer from OpenAI
+    # Step 4: Get answer from OpenAI
     try:
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",

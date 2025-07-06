@@ -23,12 +23,12 @@ export function useTxtUpload() {
         body: formData,
       })
       if (res.ok) {
-        uploadStatus.value = 'Upload erfolgreich!'
+        uploadStatus.value = 'Uploaded'
       } else {
-        uploadStatus.value = 'Fehler beim Upload.'
+        uploadStatus.value = 'Upload failed!'
       }
     } catch (e) {
-      uploadStatus.value = 'Fehler beim Upload.'
+      uploadStatus.value = 'Upload failed!'
     }
   }
 
