@@ -1,3 +1,6 @@
-.env
-backend/chroma_pa /*
+backend/.env
+backend/chroma_storage/*
 backend/news_articles
+backend/uploads
+frontend/.env
+backend/.env
