@@ -48,3 +48,18 @@ def ask():
         return jsonify({"answer": answer})
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+# Reset Chroma 
+@ask_bp.route("/reset-chroma", methods=["POST"])
+def reset_chroma():
+    try:
+        all_docs = collection.get()
+        ids = all_docs["ids"]
+
+        if ids:
+            collection.delete(ids=ids)
+
+        return jsonify({"status": "ok", "deleted_count": len(ids)})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
