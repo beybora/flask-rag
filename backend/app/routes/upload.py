@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from app.core.processor import process_uploaded_file
 import os
 
 upload_bp = Blueprint("upload", __name__)
@@ -25,6 +26,9 @@ def upload_file():
     # Save the uploaded file to the uploads folder
     save_path = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(save_path)
+
+    process_uploaded_file(save_path)
+    print("Check Check microphone check")
 
     return jsonify({
         "filename": file.filename,
