@@ -28,7 +28,7 @@ def upload_file():
     file.save(save_path)
 
     process_uploaded_file(save_path)
-    print("Check Check microphone check")
+    os.remove(save_path)
 
     return jsonify({
         "filename": file.filename,
