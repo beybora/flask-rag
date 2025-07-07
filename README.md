@@ -31,6 +31,6 @@ npm run dev
 In the `frontend/.env` file, set the backend API URL:
 
 ```
-VITE_API_URL=http://127.0.0.1:5000
+VITE_API_URL=http://127.0.0.1:8000
 ```
 
