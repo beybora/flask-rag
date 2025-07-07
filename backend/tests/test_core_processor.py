@@ -12,7 +12,7 @@ def test_process_uploaded_file_calls_embedding_and_upsert():
     with patch('app.core.processor.get_openai_embedding', return_value=fake_embedding) as mock_embed, \
          patch('app.core.processor.split_text', return_value=fake_chunks) as mock_split, \
          patch('app.core.processor.collection') as mock_collection:
-        process_uploaded_file(tmp_path)
+        process_uploaded_file(tmp_path, "text/plain")
         # for each chunk an embedding and upsert
         assert mock_embed.call_count == len(fake_chunks)
         assert mock_collection.upsert.call_count == len(fake_chunks)
