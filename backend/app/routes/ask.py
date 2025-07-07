@@ -61,6 +61,7 @@ def ask():
 # Reset Chroma 
 @ask_bp.route("/reset-chroma", methods=["POST"])
 def reset_chroma():
+    print("test")
     try:
         all_docs = collection.get()
         ids = all_docs["ids"]

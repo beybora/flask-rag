@@ -15,6 +15,6 @@ def create_app():
 
     # Register routes
     app.register_blueprint(upload_bp, url_prefix="/api/upload")
-    app.register_blueprint(ask_bp, url_prefix="/api/")
+    app.register_blueprint(ask_bp, url_prefix="/api")
 
     return app

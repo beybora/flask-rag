@@ -10,10 +10,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <button @click="resetChroma" :disabled="isLoading" class="mb-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
-    Chroma Storage zurücksetzen
+  <button
+    @click="resetChroma"
+    :disabled="isLoading"
+    class="text-xs text-red-600 underline hover:text-red-800 disabled:text-gray-400 cursor-pointer"
+  >
+    Chroma zurücksetzen
   </button>
 </template>
 
 <style scoped>
-</style> 
+</style>
